@@ -1,0 +1,28 @@
+{
+  "name": "recipy-book",
+  "version": "1.0.0",
+  "description": "recipy-book allows you to store your favorite recipies",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dKab/recipy-book.git"
+  },
+  "keywords": [
+    "recipy",
+    "recipies",
+    "recipy-book"
+  ],
+  "author": "dKab",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dKab/recipy-book/issues"
+  },
+  "homepage": "https://github.com/dKab/recipy-book#readme",
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
+}
