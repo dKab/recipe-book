@@ -1,14 +1,19 @@
 {
   "name": "recipy-book",
   "version": "1.0.0",
-  "babel": {},
+  "babel": {
+    "env": {
+      "server": {
+        "presets": ["react","es2017", "es2015"]
+      }
+    }
+  },
   "description": "recipy-book allows you to store your favorite recipies",
   "main": "index.js",
   "scripts": {
-    "test": "test",
-    "dev": "nodemon --exec babel-node src/server/index.js",
-    "prestart": "babel src/server --out-dir dist/server",
-    "start": "webpack --config config/webpack.config.prod.js && cross-env NODE_ENV=prod node dist/server/index.js"
+    "dev": "nodemon --exec cross-env BABEL_ENV=server babel-node server.js",
+    "prestart": "cross-env BABEL_ENV=server babel server.js --out-file server-compiled.js",
+    "start": "webpack --config config/webpack.config.prod.js && cross-env NODE_ENV=prod node server-compiled.js"
   },
   "repository": {
     "type": "git",
@@ -36,10 +41,14 @@
     "babel-preset-react": "^6.22.0",
     "cross-env": "^3.1.4",
     "koa": "2",
+    "koa-send": "^3.3.0",
+    "koa-static": "^2.1.0",
     "koa-webpack": "^0.2.1",
     "nodemon": "^1.11.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-redux": "^5.0.2",
+    "redux": "^3.6.0",
     "webpack": "^2.2.1",
     "webpack-merge": "^2.6.1"
   }
