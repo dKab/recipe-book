@@ -1,9 +1,28 @@
 const webpackMerge = require('webpack-merge');
 const commonConfig = require('./webpack.config.common.js');
 const webpack = require('webpack');
+const path = require('path');
 
 module.exports = function() {
     return webpackMerge(commonConfig, {
+        entry: './src/index.js',
+        module: {
+            rules: [
+                {
+                    test: /\.(js|jsx)$/,
+                    include: path.resolve(__dirname, '../src'),
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                             presets: [
+                                    ["es2015", {"modules": false}],
+                                    "react"
+                                ]
+                        }
+                    }
+                }
+            ]
+        },
         plugins: [
             new webpack.DefinePlugin({
                 'process.env': {
