@@ -1,21 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {AppContainer} from 'react-hot-loader';
-import {App} from './components/App';
+import {RootComponent} from './components/RootComponent';
 
 const render = (Component) => {
+    let components = process.env.NODE_ENV != 'production'
+        ? (<AppContainer>
+                <Component/>
+            </AppContainer>)
+        : <Component />;
     ReactDOM.render(
-        <AppContainer>
-            <Component/>
-        </AppContainer>,
+        components,
         document.getElementById('react-root')
     );
 };
 
-render(App);
+render(RootComponent);
 
 if (module.hot) {
-    module.hot.accept('./components/App', () => {
-        render(App);
-      });
+    module.hot.accept('./components/RootComponent', () => {
+        render(RootComponent);
+    });
 }
