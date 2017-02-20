@@ -3,21 +3,13 @@
   "version": "1.0.0",
   "description": "recipy-book allows you to store your favorite recipies",
   "main": "index.js",
-  "babel": {
-    "env": {
-      "server": {
-        "presets": [
-          "es2017",
-          "react"
-        ]
-      }
-    }
-  },
   "scripts": {
-    "predev": "rimraf public/bundle.js",
-    "dev": "cross-env NODE_ENV=development nodemon --watch src/server --harmony-async-await src/server/server.js",
-    "prestart": "webpack --config config/webpack.config.prod.js && cross-env BABEL_ENV=server babel src/server/server.js --out-file src/server/server-compiled.js",
-    "start": "cross-env NODE_ENV=prod node src/server/server-compiled.js"
+    "bundle-server-dev": "webpack -w --config config/webpack.config.server.js &",
+    "bundle-server-prod": "webpack --config config/webpack.config.server.js",
+    "predev": "rimraf public/bundle.js && npm run bundle-server-dev",
+    "dev": "cross-env NODE_ENV=development nodemon --watch server.bundle.js server.bundle.js",
+    "prestart": "webpack --config config/webpack.config.client.prod.js && npm run bundle-server-prod",
+    "start": "cross-env NODE_ENV=prod node server.bundle.js"
   },
   "repository": {
     "type": "git",
@@ -43,7 +35,7 @@
     "babel-preset-react": "^6.22.0",
     "cross-env": "^3.1.4",
     "koa": "next",
-    "koa-router": "next",
+    "koa-router": "^5.4.0",
     "koa-static": "^2.1.0",
     "koa-webpack": "^0.2.2",
     "nodemon": "^1.11.0",
