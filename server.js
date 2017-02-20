@@ -1,4 +1,4 @@
-const webpackDevConfig = require('../../config/webpack.config.dev.js');
+const webpackDevConfig = require('./config/webpack.config.client.dev.js');
 const webpackMiddleware = require('koa-webpack');
 const webpack = require('webpack');
 const koa = require('koa');
@@ -9,9 +9,9 @@ const router = new Router();
 const compiler = webpack(webpackDevConfig());
 const serve = require('koa-static');
 const app = new koa();
-
+console.log('dfadfasf');
 router.get('/', function(ctx) {
-  ctx.res.sendFile(path.resolve(__dirname, '../../public/index.html'));
+  ctx.res.sendFile(path.resolve(__dirname, './public/index.html'));
 });
 
 app.use(serve('public')); //serve assets from public folder
