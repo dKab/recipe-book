@@ -1,4 +1,4 @@
-export function renderPage(appHtml) {
+export function renderPage(appHtml, initialState) {
     return `
             <!DOCTYPE html>
         <html lang="en">
@@ -8,6 +8,9 @@ export function renderPage(appHtml) {
         </head>
         <body>
         <div id="react-root">${appHtml}</div>
+        <script>
+          window.__PRELOADED_STATE__ = ${JSON.stringify(initialState).replace(/</g, '\\u003c')}
+        </script>
         <script type="text/javascript" src="/bundle.js"></script>
         </body>
         </html>

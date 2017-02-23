@@ -9,9 +9,13 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import {routes} from './routes.jsx';
-import path from 'path';
 import send from 'koa-send';
 import {NotFound} from './components/NotFound.jsx';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import {recipiesReducer} from './reducers';
+
+
 const compiler = webpack(webpackDevConfig());
 const app = new koa();
 
@@ -19,8 +23,9 @@ console.log(`running app in ${process.env.NODE_ENV} mode`);
 
 app.use(async (ctx, next) => {
     const matchedPath = await serve('public')(ctx, next);
-    if (!matchedPath && !ctx.body && ctx.status == 404) { //404
+    if (!matchedPath && !ctx.body && ctx.status == 404) {
         ctx.body = renderToString(<NotFound />);
+        ctx.status = 404;
     }
 });
 
@@ -47,8 +52,12 @@ app.use(function(ctx) {
         } else if (redirect) {
             ctx.redirect(redirect.pathname + redirect.search)
         } else if (props) {
-            const appHtml = renderToString(<RouterContext {...props}/>);
-            ctx.body = renderPage(appHtml);
+            const store = createStore(recipiesReducer);
+            const appHtml = renderToString( <Provider store={store}>
+                                                <RouterContext {...props}/>
+                                            </Provider>);
+            const initialState = store.getState();
+            ctx.body = renderPage(appHtml, initialState);
         }
     });
 });
