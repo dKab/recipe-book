@@ -39,6 +39,15 @@ module.exports = {
                         ]
                     }
                 }
+            },
+            {
+                test: /\.css$/,
+                use: {
+                    loader: 'css-loader/locals',
+                    options: {
+                        modules: true
+                    }
+                },
             }
         ]
     }

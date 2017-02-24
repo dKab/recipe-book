@@ -5,6 +5,7 @@ export function renderPage(appHtml, initialState) {
         <head>
             <meta charset="UTF-8">
             <title>Recipy book</title>
+            <link rel="stylesheet" href="/styles.css"/>    
         </head>
         <body>
         <div id="react-root">${appHtml}</div>

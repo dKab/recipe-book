@@ -1,5 +1,6 @@
 const webpackMerge = require('webpack-merge');
 const commonConfig = require('./webpack.config.client.common.js');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 
@@ -20,10 +21,28 @@ module.exports = function() {
                                 ]
                         }
                     }
+                },
+                {
+                    test: /\.css$/,
+                    use: ExtractTextPlugin.extract({
+                        use: 
+                            {
+                                loader: 'css-loader',
+                                options: {
+                                    modules: true,
+                                    minimize: true
+                                }
+                            }
+                    })
                 }
             ]
         },
         plugins: [
+            new ExtractTextPlugin({
+                filename: 'styles.css',
+                allChunks: true,
+                ignoreOrder: true
+            }),
             new webpack.DefinePlugin({
                 'process.env': {
                     'NODE_ENV': JSON.stringify('production')

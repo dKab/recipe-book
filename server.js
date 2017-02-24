@@ -10,7 +10,7 @@ import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import {routes} from './routes.jsx';
 import send from 'koa-send';
-import {NotFound} from './components/NotFound.jsx';
+import {NotFound} from './components/NotFound/NotFound.jsx';
 import {Provider} from 'react-redux';
 import {createStore} from 'redux';
 import {recipiesReducer} from './reducers';

@@ -1,5 +1,6 @@
 node_modules
 .idea
 public/bundle.js
+public/styles.css
 npm-debug.log
 server.bundle.js
