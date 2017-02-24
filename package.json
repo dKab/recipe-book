@@ -22,7 +22,8 @@
     "predev": "rimraf public/bundle.js && npm run build-server",
     "dev": "cross-env NODE_ENV=development nodemon --watch server.bundle.js server.bundle.js",
     "prestart": "webpack --config config/webpack.config.client.prod.js && npm run build-server",
-    "start": "cross-env NODE_ENV=prod node server.bundle.js"
+    "start": "cross-env NODE_ENV=prod node server.bundle.js",
+    "build": "npm run prestart"
   },
   "repository": {
     "type": "git",
