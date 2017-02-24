@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dKab/recipy-book.svg?branch=master)](https://travis-ci.org/dKab/recipy-book)
+
 Development
 ===========
 
@@ -9,4 +11,7 @@ Development
 Build & Production
 ==================
 
-**npm start** will create two bundles for client and server code.
+**npm start** will create two bundles for client and server code and run server bundle with `node`.
+
+Use **npm run test** for testing.  
+
