@@ -12,9 +12,10 @@ import {routes} from './routes.jsx';
 import send from 'koa-send';
 import {NotFound} from './components/NotFound/NotFound.jsx';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux';
-import {recipiesReducer} from './reducers';
-
+import {createStore, applyMiddleware} from 'redux';
+import {reducer} from './reducers';
+import api from './middleware/api';
+import thunk from 'redux-thunk';
 
 const compiler = webpack(webpackDevConfig());
 const app = new koa();
@@ -36,9 +37,10 @@ if (process.env.NODE_ENV != 'prod') {
 }
 
 app.use(function(ctx, next) {
-    if (ctx.path.indexOf('/api') !== 0) {
+    if (ctx.path.indexOf('/api/') !== 0) {
         next();
     } else {
+        // TODO somehow mount koa-router here so it can handle /api/ calls
         ctx.body = 'API isnt ready yet!';
     }
 });
@@ -52,7 +54,13 @@ app.use(function(ctx) {
         } else if (redirect) {
             ctx.redirect(redirect.pathname + redirect.search)
         } else if (props) {
-            const store = createStore(recipiesReducer);
+            console.log('props.components', props.components);
+            console.log('props.params', props.params);
+            // TODO add for all components in the route call fetchData method
+            // wait till all async stuff is completed 
+            // and only after that proceed
+            const store = createStore(reducer,
+                 applyMiddleware(thunk, api));
             const appHtml = renderToString( <Provider store={store}>
                                                 <RouterContext {...props}/>
                                             </Provider>);

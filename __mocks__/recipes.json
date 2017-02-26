@@ -1,0 +1,76 @@
+{
+    "recipes": [
+        {
+            "id": 1,
+            "name": "recipy 1",
+            "description": "foo",
+            "cookingTime": 30,
+            "portions": 2,
+            "difficulty": "easy",
+            "rating": 4.5,
+            "ownerId": 2,
+            "isPrivate": false,
+            "proccessDescription": "lorem impsum sit amet lorem impsum sit amet lorem impsum sit amet"
+        },
+        {
+            "id": 2,
+            "name": "recipy 2",
+            "description": "foo",
+            "cookingTime": 30,
+            "portions": 2,
+            "difficulty": "medium",
+            "rating": 4.5,
+            "ownerId": 2,
+            "isPrivate": false,
+            "proccessDescription": "lorem impsum sit amet lorem impsum sit amet lorem impsum sit amet"
+        },
+        {
+            "id": 3,
+            "name": "recipy 3",
+            "description": "foo",
+            "cookingTime": 30,
+            "portions": 2,
+            "difficulty": "easy",
+            "rating": 4.5,
+            "ownerId": 2,
+            "isPrivate": false,
+            "proccessDescription": "lorem impsum sit amet lorem impsum sit amet lorem impsum sit amet"
+        },
+        {
+            "id": 4,
+            "name": "recipy 4",
+            "description": "foo",
+            "cookingTime": 30,
+            "portions": 2,
+            "difficulty": "hard",
+            "rating": 4.5,
+            "ownerId": 2,
+            "isPrivate": false,
+            "proccessDescription": "lorem impsum sit amet lorem impsum sit amet lorem impsum sit amet"
+        },
+        {
+            "id": 5,
+            "name": "recipy 5",
+            "description": "foo",
+            "cookingTime": 30,
+            "portions": 2,
+            "difficulty": "easy",
+            "rating": 4.5,
+            "ownerId": 2,
+            "isPrivate": false,
+            "proccessDescription": "lorem impsum sit amet lorem impsum sit amet lorem impsum sit amet"
+        },
+        {
+            "id": 6,
+            "name": "recipy 6",
+            "description": "foo",
+            "cookingTime": 90,
+            "portions": 2,
+            "difficulty": "hard",
+            "rating": 4.5,
+            "ownerId": 2,
+            "isPrivate": false,
+            "proccessDescription": "lorem impsum sit amet lorem impsum sit amet lorem impsum sit amet"
+        }
+    ]
+}
