@@ -18,7 +18,10 @@ module.exports = function() {
                              presets: [
                                     ["es2015", {"modules": false}], //modules: false is because of webpack 2
                                     "react"
-                                ]
+                                ],
+                             plugins: [
+                                 "transform-object-rest-spread"
+                             ]
                         }
                     }
                 },

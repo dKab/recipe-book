@@ -14,8 +14,10 @@ import {NotFound} from './components/NotFound/NotFound.jsx';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import {reducer} from './reducers';
+import Router from 'koa-router';
 import api from './middleware/api';
 import thunk from 'redux-thunk';
+import { getRecipe, getRecipes } from './server/getRecipes';
 
 const compiler = webpack(webpackDevConfig());
 const app = new koa();
@@ -36,17 +38,43 @@ if (process.env.NODE_ENV != 'prod') {
     }));
 }
 
-app.use(function(ctx, next) {
-    if (ctx.path.indexOf('/api/') !== 0) {
-        next();
-    } else {
-        // TODO somehow mount koa-router here so it can handle /api/ calls
-        ctx.body = 'API isnt ready yet!';
-    }
+var router = new Router({
+  prefix: '/api/'
 });
 
-app.use(function(ctx) {
-    match({ routes: routes, location: ctx.path }, (err, redirect, props) => {
+router.get('/recipes', async (ctx, next) => {
+  try { 
+    const response = await getRecipes();
+    ctx.body = response;
+  } catch (err) {
+      ctx.status = 500;
+      ctx.body = 'Internal server error';
+  }
+}); 
+
+router.get('/recipes/:id', async (ctx, next) => {
+  try { 
+    const response = await getRecipe(ctx.params.id);
+    ctx.body = response;
+  } catch (err) {
+      ctx.status = 500;
+      ctx.body = 'Internal server error';
+  }
+});
+
+app.use(router.routes());
+
+// app.use(function(ctx, next) {
+//     if (ctx.path.indexOf('/api/') !== 0) {
+//         next();
+//     } else {
+//         // TODO somehow mount koa-router here so it can handle /api/ calls
+//         ctx.body = 'API isnt ready yet!';
+//     }
+// });
+
+app.use((ctx) => {
+    match({ routes: routes, location: ctx.path }, async (err, redirect, props) => {
         if (err) {
             ctx.status = 500;
             ctx.body = 'Server error';
@@ -56,11 +84,14 @@ app.use(function(ctx) {
         } else if (props) {
             console.log('props.components', props.components);
             console.log('props.params', props.params);
-            // TODO add for all components in the route call fetchData method
-            // wait till all async stuff is completed 
-            // and only after that proceed
             const store = createStore(reducer,
                  applyMiddleware(thunk, api));
+            // TODO check that wee have indeed ALL our components here even child ones and deeply nested
+            const promises = props.components
+                .filter(component => typeof component.fetchData !== 'undefined') 
+                .map((component) => component.fetchData(props.params))
+            await Promise.all(promises);
+            
             const appHtml = renderToString( <Provider store={store}>
                                                 <RouterContext {...props}/>
                                             </Provider>);

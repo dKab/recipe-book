@@ -1,14 +1,16 @@
-import { RECIPES_FAILURE, RECIPES_REQUEST, RECIPES_SUCCESS } from './actions';
+import { RECIPES_FAILURE,
+     RECIPES_REQUEST,
+      RECIPES_SUCCESS, RECIPE_FAILURE, RECIPE_REQUEST, RECIPE_SUCCESS } from './actions';
 import { combineReducers } from 'redux';
 
-const recipes = {
+const initialRecipes = {
     isLoading: false,
     loaded: false,
     error: null,
     list: []
 };
 
-const recipes = (state = recipes, action) => {
+const recipes = (state = initialRecipes, action) => {
     switch (action.type) {
         case RECIPES_SUCCESS:
             return {...state, isLoading: false, loaded: true, list: action.response };
@@ -21,10 +23,23 @@ const recipes = (state = recipes, action) => {
     }
 };
 
+const currentRecipe = (state = {}, action) => {
+    switch (action.type) {
+        case RECIPE_SUCCESS:
+            return {...action.response, loaded: true, isLoading: false };
+        case RECIPE_FAILURE:
+            return { loaded: false, isLoading: false };
+        case RECIPE_REQUEST: 
+            return { loaded: false, isLoading: true };
+        default:
+            return state;
+    }
+}
+
 const user = (state = {}, action) => {
     return state; // just a stub for now
 }
 
 export const reducer = combineReducers({
-    recipes, user
+    recipes, user, currentRecipe
 });

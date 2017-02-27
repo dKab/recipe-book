@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink} from './shared/NavLink/NavLink.jsx';
+import { NavLink} from '../components/shared/NavLink/NavLink.jsx';
 import { loadRecipes } from '../actions'
 
 class ListViewComponent extends React.Component {
     static fetchData() {
-        this.props.dispatchLoadRecipes();
+        return this.props.dispatchLoadRecipes();
     }
 
     render() {
@@ -30,7 +30,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    dispatchLoadRecipes: dispatch(loadRecipes())
+    dispatchLoadRecipes: () => dispatch(loadRecipes())
 });
 
 export const ListView = connect(mapStateToProps, mapDispatchToProps)(ListViewComponent);

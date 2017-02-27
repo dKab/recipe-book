@@ -1,9 +1,14 @@
 import fs from 'fs';
 
-export default getRecipes = () => {
+export const getRecipes = () => {
     // TODO replace it with actual query to DB once db is set up
+    return loadDataFromFile('../__mocks__/recipes.json');
+}
+
+
+const loadDataFromFile = (mockFileName) => {
     return new Promise((resolve, reject) => {
-        readModuleFile('../__mocks__/recipes.json', 
+        readModuleFile(mockFileName, 
             (err, json) => {
                 if (err) {
                     reject(err);
@@ -13,6 +18,10 @@ export default getRecipes = () => {
         });
     });
 }
+
+export const getRecipe = (id) => {
+    return loadDataFromFile('../__mocks__/recipe.json');
+};
 
 function readModuleFile(path, callback) {
     try {
