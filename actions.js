@@ -1,5 +1,15 @@
 import { CALL_API } from './middleware/api';
-import { getRecipes, getRecipe } from './server/getRecipes';
+import { getRecipe, getRecipes } from './server/getRecipes';
+
+const isNode = () => typeof window === 'undefined';
+
+// if (isNode()) {
+//     const loaders = require('./server/getRecipes');
+//     let { getRecipe, getRecipes } = loaders;
+// } else {
+//     let getRecipes;
+//     let getRecipe = getRecipes  = () => null;
+// }
 
 export const RECIPES_REQUEST = 'RECIPES_REQUEST';
 export const RECIPES_SUCCESS = 'RECIPES_SUCCESS';
@@ -37,12 +47,6 @@ const isomorphicFetch = (directHandler, apiHandler, successAction, failureAction
        return Promise.resolve(dispatch(apiHandler()));
     } 
 }  
-
-
-
-const isNode = () => typeof window === 'undefined';
-
-
 
 const fetchRecipesFromAPI = () => ({
     [CALL_API]: {

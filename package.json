@@ -61,6 +61,7 @@
     "koa-send": "^3.3.0",
     "koa-static": "^3.0.0",
     "koa-webpack": "^0.2.2",
+    "module-mapping-webpack-plugin": "^1.1.1",
     "nodemon": "^1.11.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",

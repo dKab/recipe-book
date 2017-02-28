@@ -1,6 +1,7 @@
 const webpackMerge = require('webpack-merge');
 const commonConfig = require('./webpack.config.client.common.js');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+// const ModuleMappingPlugin = require('module-mapping-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 
@@ -45,6 +46,11 @@ module.exports = function() {
                     }
             ]
         },
+        resolve: {
+            alias: {
+                'fs': '../__mocks__/fs-mock.js'
+            }
+        },
         devtool: 'cheap-eval-source-map',
         plugins: [
             new ExtractTextPlugin({
@@ -52,6 +58,9 @@ module.exports = function() {
                 allChunks: true,
                 ignoreOrder: true
             }),
+            // new ModuleMappingPlugin({
+            //     'fs': '../__mocks__/fs-mock.js'
+            // }),
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NoEmitOnErrorsPlugin()
         ]

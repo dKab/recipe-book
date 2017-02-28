@@ -2936,6 +2936,10 @@ minimist@^1.1.1, minimist@^1.2.0:
   dependencies:
     minimist "0.0.8"
 
+module-mapping-webpack-plugin@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/module-mapping-webpack-plugin/-/module-mapping-webpack-plugin-1.1.1.tgz#0e3952aa4034b85f2e5ea9c700578f51e76e5c35"
+
 ms@0.7.1:
   version "0.7.1"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.1.tgz#9cd13c03adbff25b65effde7ce864ee952017098"

@@ -1,5 +1,6 @@
 import fs from 'fs';
 
+
 export const getRecipes = () => {
     // TODO replace it with actual query to DB once db is set up
     return loadDataFromFile('../__mocks__/recipes.json');

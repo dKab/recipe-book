@@ -42,39 +42,40 @@ var router = new Router({
   prefix: '/api/'
 });
 
-router.get('/recipes', async (ctx, next) => {
-  try { 
-    const response = await getRecipes();
-    ctx.body = response;
-  } catch (err) {
-      ctx.status = 500;
-      ctx.body = 'Internal server error';
-  }
-}); 
+// router.get('/recipes', async (ctx, next) => {
+//   try { 
+//     const response = await getRecipes();
+//     ctx.body = response;
+//   } catch (err) {
+//       ctx.status = 500;
+//       ctx.body = 'Internal server error';
+//   }
+// }); 
 
-router.get('/recipes/:id', async (ctx, next) => {
-  try { 
-    const response = await getRecipe(ctx.params.id);
-    ctx.body = response;
-  } catch (err) {
-      ctx.status = 500;
-      ctx.body = 'Internal server error';
-  }
-});
-
-app.use(router.routes());
-
-// app.use(function(ctx, next) {
-//     if (ctx.path.indexOf('/api/') !== 0) {
-//         next();
-//     } else {
-//         // TODO somehow mount koa-router here so it can handle /api/ calls
-//         ctx.body = 'API isnt ready yet!';
-//     }
+// router.get('/recipes/:id', async (ctx, next) => {
+//   try { 
+//     const response = await getRecipe(ctx.params.id);
+//     ctx.body = response;
+//   } catch (err) {
+//       ctx.status = 500;
+//       ctx.body = 'Internal server error';
+//   }
 // });
+
+// app.use(router.routes());
+
+app.use(function(ctx, next) {
+    if (ctx.path.indexOf('/api/') !== 0) {
+        next();
+    } else {
+        // TODO somehow mount koa-router here so it can handle /api/ calls
+        ctx.body = 'API isnt ready yet!';
+    }
+});
 
 app.use((ctx) => {
     match({ routes: routes, location: ctx.path }, async (err, redirect, props) => {
+        console.log('we are in match');
         if (err) {
             ctx.status = 500;
             ctx.body = 'Server error';
@@ -82,16 +83,20 @@ app.use((ctx) => {
         } else if (redirect) {
             ctx.redirect(redirect.pathname + redirect.search)
         } else if (props) {
-            console.log('props.components', props.components);
-            console.log('props.params', props.params);
+            console.log('we have props!');
+            // console.log('props.components', props.components);
+            // console.log('props.params', props.params);
             const store = createStore(reducer,
                  applyMiddleware(thunk, api));
+                 console.log('store is created');
             // TODO check that wee have indeed ALL our components here even child ones and deeply nested
             const promises = props.components
                 .filter(component => typeof component.fetchData !== 'undefined') 
-                .map((component) => component.fetchData(props.params))
-            await Promise.all(promises);
+                .map(component => component.fetchData(props.params));
             
+            console.log(`we have ${promises.lenght} promises`);
+            await Promise.all(promises);
+            console.log('promises are done');
             const appHtml = renderToString( <Provider store={store}>
                                                 <RouterContext {...props}/>
                                             </Provider>);

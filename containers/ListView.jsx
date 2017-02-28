@@ -5,6 +5,7 @@ import { loadRecipes } from '../actions'
 
 class ListViewComponent extends React.Component {
     static fetchData() {
+        console.log('fetching data for ListView');
         return this.props.dispatchLoadRecipes();
     }
 
