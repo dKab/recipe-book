@@ -48,6 +48,7 @@ module.exports = function() {
         },
         resolve: {
             alias: {
+                'path': '../__mocks__/path-mock.js',
                 'fs': '../__mocks__/fs-mock.js'
             }
         },

@@ -1,9 +1,9 @@
 import fs from 'fs';
-
+import path from 'path';
 
 export const getRecipes = () => {
     // TODO replace it with actual query to DB once db is set up
-    return loadDataFromFile('../__mocks__/recipes.json');
+    return loadDataFromFile(path.resolve(__dirname, '../__mocks__/recipes.json'));
 }
 
 
@@ -21,13 +21,12 @@ const loadDataFromFile = (mockFileName) => {
 }
 
 export const getRecipe = (id) => {
-    return loadDataFromFile('../__mocks__/recipe.json');
+    return loadDataFromFile(path.resolve(__dirname, '../__mocks__/recipe.json'));
 };
 
 function readModuleFile(path, callback) {
     try {
-        var filename = require.resolve(path);
-        fs.readFile(filename, 'utf8', callback);
+        fs.readFile(path, 'utf8', callback);
     } catch (e) {
         callback(e);
     }

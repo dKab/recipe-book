@@ -25,22 +25,23 @@ const app = new koa();
 console.log(`running app in ${process.env.NODE_ENV} mode`);
 
 app.use(async (ctx, next) => {
-    const matchedPath = await serve('public')(ctx, next);
-    if (!matchedPath && !ctx.body && ctx.status == 404) {
-        ctx.body = renderToString(<NotFound />);
-        ctx.status = 404;
-    }
-});
+    await next();
+    console.log('here what in response body:', ctx.body);
+    console.log('status: ', ctx.status);
+})
 
-if (process.env.NODE_ENV != 'prod') {
-    app.use(webpackMiddleware({
-        compiler: compiler
-    }));
-}
+// app.use(async (ctx, next) => {
+//      await next();
+//     //  if (!ctx.body && ctx.status == 404) {
+//     //     console.log('sending 404');
+//     //     ctx.body = renderToString(<NotFound />);
+//     //     ctx.status = 404;
+//     // }
+// });
 
-var router = new Router({
-  prefix: '/api/'
-});
+// var router = new Router({
+//   prefix: '/api/'
+// });
 
 // router.get('/recipes', async (ctx, next) => {
 //   try { 
@@ -64,17 +65,19 @@ var router = new Router({
 
 // app.use(router.routes());
 
-app.use(function(ctx, next) {
-    if (ctx.path.indexOf('/api/') !== 0) {
-        next();
-    } else {
-        // TODO somehow mount koa-router here so it can handle /api/ calls
-        ctx.body = 'API isnt ready yet!';
-    }
-});
+// app.use(function(ctx, next) {
+//     if (ctx.path.indexOf('/api/') !== 0) {
+//         next();
+//     } else {
+//         // TODO somehow mount koa-router here so it can handle /api/ calls
+//         ctx.body = 'API isnt ready yet!';
+//     }
+// });
 
-app.use((ctx) => {
-    match({ routes: routes, location: ctx.path }, async (err, redirect, props) => {
+app.use(async (ctx, next) => {
+    // await next();
+    await new Promise((resolve, reject) => {
+        match({ routes: routes, location: ctx.path }, (err, redirect, props) => {
         console.log('we are in match');
         if (err) {
             ctx.status = 500;
@@ -92,20 +95,37 @@ app.use((ctx) => {
             // TODO check that wee have indeed ALL our components here even child ones and deeply nested
             const promises = props.components
                 .filter(component => typeof component.fetchData !== 'undefined') 
-                .map(component => component.fetchData(props.params));
+                .map(component => store.dispatch(component.fetchData(props.params)));
             
-            console.log(`we have ${promises.lenght} promises`);
-            await Promise.all(promises);
-            console.log('promises are done');
-            const appHtml = renderToString( <Provider store={store}>
+            console.log(`we have ${promises.length} promises`);
+            Promise.all(promises).then(() => {
+                console.log('promises are done');
+                const appHtml = renderToString( <Provider store={store}>
                                                 <RouterContext {...props}/>
                                             </Provider>);
-            const initialState = store.getState();
-            ctx.body = renderPage(appHtml, initialState);
+                const initialState = store.getState();
+                ctx.body = renderPage(appHtml, initialState);
+                console.log('sending markup');
+                resolve();
+            })
+            
         }
+        });
     });
+    next();
 });
 
-app.listen(3001, function () {
-    console.log('Listening on port 3001!');
+
+if (process.env.NODE_ENV != 'prod') {
+    app.use(webpackMiddleware({
+        compiler: compiler
+    }));
+}
+
+app.use(serve('public'));
+
+
+
+app.listen(3002, function () {
+    console.log('Listening on port 3002!');
 });
