@@ -1,6 +1,7 @@
 import regeneratorRuntime from "regenerator-runtime";
 import webpackDevConfig from './config/webpack.config.client.dev.js';
-import webpackMiddleware from 'koa-webpack';
+// import webpackMiddleware from 'koa-webpack';
+import WebpackDevServer from 'webpack-dev-server';
 import webpack from 'webpack';
 import koa from 'koa';
 import {renderPage} from './server/renderTemplate';
@@ -19,7 +20,7 @@ import api from './middleware/api';
 import thunk from 'redux-thunk';
 import { getRecipe, getRecipes } from './server/getRecipes';
 
-const compiler = webpack(webpackDevConfig());
+// const compiler = webpack(webpackDevConfig());
 const app = new koa();
 
 console.log(`running app in ${process.env.NODE_ENV} mode`);
@@ -117,9 +118,15 @@ app.use(async (ctx, next) => {
 
 
 if (process.env.NODE_ENV != 'prod') {
-    app.use(webpackMiddleware({
-        compiler: compiler
-    }));
+    var devServer = new WebpackDevServer(webpack(webpackDevConfig()), {
+    contentBase: __dirname,
+    hot: true,
+    quiet: false,
+    noInfo: false,
+    publicPath: "/public/",
+
+    stats: { colors: true }
+});
 }
 
 app.use(serve('public'));

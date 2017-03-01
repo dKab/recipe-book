@@ -1,16 +1,20 @@
 const webpackMerge = require('webpack-merge');
 const commonConfig = require('./webpack.config.client.common.js');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const ModuleMappingPlugin = require('module-mapping-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 
 module.exports = function() {
     return webpackMerge(commonConfig, {
+        output: {
+            path: path.resolve(__dirname, '../public'),
+            filename: 'bundle.js',
+            publicPath: 'http://localhost:8081/public/'
+        },
         entry: [
-            "react-hot-loader/patch",
-            'webpack-hot-middleware/client',
-            './index.js'
+            './index.js',
+            'webpack/hot/dev-server',
+            'webpack-dev-server/client?http://localhost:8081'
         ],
         module: {
             rules: [
@@ -52,6 +56,26 @@ module.exports = function() {
                 'fs': '../__mocks__/fs-mock.js'
             }
         },
+        devServer: {
+            // proxy: {
+            //     "/": {
+            //         target: "http://localhost:3001",
+            //         bypass: function(req, res, proxyOptions) {
+            //             if (req.headers.accept.indexOf("сss") !== -1 || req.headers.accept.indexOf('javascript') !== -1 || font) {
+            //                 console.log(`serving ${req.url} from webpack-dev-server:`);
+            //                 return `/public/${req.url}`;
+            //             } else if (req.headers.accept.indexOf('javascript') !== -1) {
+            //                 console.log(`serving ${req.url} from webpack-dev-server:`);
+            //                 return `/public`
+            //             } else {
+            //                 console.log(`bypassing request ${req.url} to koa server on http://localhost:3001`);
+            //                 return false;
+            //             }
+            //         }
+            //     }
+            // }
+            port: 8081
+        },
         devtool: 'cheap-eval-source-map',
         plugins: [
             new ExtractTextPlugin({
@@ -59,9 +83,6 @@ module.exports = function() {
                 allChunks: true,
                 ignoreOrder: true
             }),
-            // new ModuleMappingPlugin({
-            //     'fs': '../__mocks__/fs-mock.js'
-            // }),
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NoEmitOnErrorsPlugin()
         ]
