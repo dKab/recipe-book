@@ -20,7 +20,7 @@ import thunk from 'redux-thunk';
 import { getRecipe, getRecipes } from './server/getRecipes';
 import path from 'path';
 
-const compiler = webpack(webpackDevConfig());
+// const compiler = webpack(webpackDevConfig());
 const app = new koa();
 
 console.log(`running app in ${process.env.NODE_ENV} mode`);

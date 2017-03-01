@@ -6,6 +6,11 @@ const path = require('path');
 
 module.exports = function() {
     return webpackMerge(commonConfig, {
+        output: {
+            path: path.resolve(__dirname, '../public'),
+            filename: 'bundle.js',
+            publicPath: 'http://localhost:8081/public/'
+        },
         entry: [
              'react-hot-loader/patch',
             // activate HMR for React
