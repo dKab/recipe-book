@@ -1,1 +1,2 @@
-export default path = { resolve: () => null };
+const path = { resolve: () => null };
+export default path;

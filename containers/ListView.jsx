@@ -12,8 +12,9 @@ class ListViewComponent extends React.Component {
     render() {
         return (
             <div>
+                <span>123</span>
                 <ul>
-                    { this.props.recipes.list.map(recipe =><li><NavLink to={`/recipy/${recipe.id}`}>{recipe.name}</NavLink></li>) }
+                    { this.props.recipes.list.map(recipe =><li key={recipe.id}><NavLink to={`/recipy/${recipe.id}`}>{recipe.name}</NavLink></li>) }
                 </ul>
             </div>
         );

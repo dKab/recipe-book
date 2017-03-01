@@ -14,7 +14,7 @@ const loadDataFromFile = (mockFileName) => {
                 if (err) {
                     reject(err);
                 } else {
-                    resolve(json);
+                    resolve(JSON.parse(json));
                 }
         });
     });
@@ -24,9 +24,9 @@ export const getRecipe = (id) => {
     return loadDataFromFile(path.resolve(__dirname, '../__mocks__/recipe.json'));
 };
 
-function readModuleFile(path, callback) {
+function readModuleFile(pathToFile, callback) {
     try {
-        fs.readFile(path, 'utf8', callback);
+        fs.readFile(pathToFile, 'utf8', callback);
     } catch (e) {
         callback(e);
     }

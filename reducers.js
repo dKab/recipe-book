@@ -13,7 +13,7 @@ const initialRecipes = {
 const recipes = (state = initialRecipes, action) => {
     switch (action.type) {
         case RECIPES_SUCCESS:
-            return {...state, isLoading: false, loaded: true, list: action.response };
+            return {...state, isLoading: false, loaded: true, list: action.response.recipes };
         case RECIPES_REQUEST: 
             return {...state, isLoading: true };
         case RECIPES_FAILURE: 

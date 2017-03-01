@@ -1,15 +1,21 @@
 const webpackMerge = require('webpack-merge');
 const commonConfig = require('./webpack.config.client.common.js');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const ModuleMappingPlugin = require('module-mapping-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 
 module.exports = function() {
     return webpackMerge(commonConfig, {
         entry: [
-            "react-hot-loader/patch",
-            'webpack-hot-middleware/client',
+             'react-hot-loader/patch',
+            // activate HMR for React
+
+            'webpack-dev-server/client?http://localhost:8080',
+            // bundle the client for webpack-dev-server
+            // and connect to the provided endpoint
+
+            'webpack/hot/only-dev-server',
+            // bundle the client for hot rel
             './index.js'
         ],
         module: {
@@ -52,16 +58,13 @@ module.exports = function() {
                 'fs': '../__mocks__/fs-mock.js'
             }
         },
-        devtool: 'cheap-eval-source-map',
+        devtool: 'inline-source-map',
         plugins: [
             new ExtractTextPlugin({
                 filename: 'styles.css',
                 allChunks: true,
                 ignoreOrder: true
             }),
-            // new ModuleMappingPlugin({
-            //     'fs': '../__mocks__/fs-mock.js'
-            // }),
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NoEmitOnErrorsPlugin()
         ]

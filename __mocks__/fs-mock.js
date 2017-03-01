@@ -1,1 +1,2 @@
-export default fs = { readFile: () => null };
+const fs = { readFile: () => null };
+export default fs;

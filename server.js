@@ -1,6 +1,6 @@
 import regeneratorRuntime from "regenerator-runtime";
 import webpackDevConfig from './config/webpack.config.client.dev.js';
-import webpackMiddleware from 'koa-webpack';
+import WebpackDevServer from 'webpack-dev-server';
 import webpack from 'webpack';
 import koa from 'koa';
 import {renderPage} from './server/renderTemplate';
@@ -9,7 +9,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { match, RouterContext } from 'react-router';
 import {routes} from './routes.jsx';
-import send from 'koa-send';
+// import send from 'koa-send';
 import {NotFound} from './components/NotFound/NotFound.jsx';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
@@ -18,6 +18,7 @@ import Router from 'koa-router';
 import api from './middleware/api';
 import thunk from 'redux-thunk';
 import { getRecipe, getRecipes } from './server/getRecipes';
+import path from 'path';
 
 const compiler = webpack(webpackDevConfig());
 const app = new koa();
@@ -79,6 +80,7 @@ app.use(async (ctx, next) => {
     await new Promise((resolve, reject) => {
         match({ routes: routes, location: ctx.path }, (err, redirect, props) => {
         console.log('we are in match');
+        console.log(`url is ${ctx.path}`);
         if (err) {
             ctx.status = 500;
             ctx.body = 'Server error';
@@ -90,6 +92,7 @@ app.use(async (ctx, next) => {
             // console.log('props.components', props.components);
             // console.log('props.params', props.params);
             const store = createStore(reducer,
+                    {},
                  applyMiddleware(thunk, api));
                  console.log('store is created');
             // TODO check that wee have indeed ALL our components here even child ones and deeply nested
@@ -115,17 +118,42 @@ app.use(async (ctx, next) => {
     next();
 });
 
-
 if (process.env.NODE_ENV != 'prod') {
-    app.use(webpackMiddleware({
-        compiler: compiler
-    }));
+    var webpackDevServer = new WebpackDevServer(webpack(webpackDevConfig()), {
+        contentBase: path.resolve(__dirname, '../public'),
+        hot: true,
+        quiet: false,
+        noInfo: false,
+        publicPath: '/',
+        overlay: {
+            warnings: true,
+            errors: true
+        },
+        proxy: {
+                "/**": {
+                target: "http://localhost:3000",
+                bypass: function(req, res, proxyOptions) {
+                    if (req.path.indexOf("bundle.js") !== -1 
+                        || req.headers.accept.indexOf('css') !== -1
+                        ) {
+                        console.log(`Skipping proxy for ${req.path} request.`);
+                        return `/public${req.path}`;
+                    }
+                }
+                }
+        },
+        stats: { 
+            colors: true
+        }
+    });
+} else {
+    // webpack-dev-server serves all static assets in development mode
+    app.use(serve('public'));
 }
 
-app.use(serve('public'));
 
 
-
-app.listen(3002, function () {
-    console.log('Listening on port 3002!');
+webpackDevServer.listen(8080, "localhost", () => {});
+app.listen(3000, () => {
+    console.log('Listening on port 3000!');
 });

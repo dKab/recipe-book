@@ -11,28 +11,6 @@ const isNode = () => typeof window === 'undefined';
 //     let getRecipe = getRecipes  = () => null;
 // }
 
-export const RECIPES_REQUEST = 'RECIPES_REQUEST';
-export const RECIPES_SUCCESS = 'RECIPES_SUCCESS';
-export const RECIPES_FAILURE = 'RECIPES_FAILURE';
-
-// Makes API call if executed on the client, doesn't do API call if executed on the server.
-// Relies on Redux Thunk middleware.
-export const loadRecipes = () => (dispatch, getState) => {
-   return isomorphicFetch(getRecipes, fetchRecipesFromAPI, RECIPES_REQUEST, RECIPES_FAILURE, dispatch);
-}
-
-
-export const RECIPE_REQUEST = 'RECIPE_REQUEST';
-export const RECIPE_FAILURE = 'RECIPE_FAILURE';
-export const RECIPE_SUCCESS = 'RECIPE_SUCCESS';
-
-export const loadRecipe = (id) => (dispatch, getState) => {
-    const boundGetRecipe = () => loadRecipe(id);
-    const boundFetchRecipeFromAPI = () => fetchRecipeFromAPI(id);
-    return isomorphicFetch(boundGetRecipe, boundFetchRecipeFromAPI, RECIPE_REQUEST, RECIPE_FAILURE, dispatch);   
-}
-
-
 const isomorphicFetch = (directHandler, apiHandler, successAction, failureAction, dispatch) => {
     if (isNode()) {
         // We will reuse the same actions that we use for API call on the client
@@ -47,6 +25,27 @@ const isomorphicFetch = (directHandler, apiHandler, successAction, failureAction
        return Promise.resolve(dispatch(apiHandler()));
     } 
 }  
+
+export const RECIPES_REQUEST = 'RECIPES_REQUEST';
+export const RECIPES_SUCCESS = 'RECIPES_SUCCESS';
+export const RECIPES_FAILURE = 'RECIPES_FAILURE';
+
+// Makes API call if executed on the client, doesn't do API call if executed on the server.
+// Relies on Redux Thunk middleware.
+export const loadRecipes = () => (dispatch, getState) => {
+   return isomorphicFetch(getRecipes, fetchRecipesFromAPI, RECIPES_SUCCESS, RECIPES_FAILURE, dispatch);
+}
+
+
+export const RECIPE_REQUEST = 'RECIPE_REQUEST';
+export const RECIPE_FAILURE = 'RECIPE_FAILURE';
+export const RECIPE_SUCCESS = 'RECIPE_SUCCESS';
+
+export const loadRecipe = (id) => (dispatch, getState) => {
+    const boundGetRecipe = () => loadRecipe(id);
+    const boundFetchRecipeFromAPI = () => fetchRecipeFromAPI(id);
+    return isomorphicFetch(boundGetRecipe, boundFetchRecipeFromAPI, RECIPE_SUCCESS, RECIPE_FAILURE, dispatch);   
+}
 
 const fetchRecipesFromAPI = () => ({
     [CALL_API]: {
