@@ -10,7 +10,7 @@ const callApi = (endpoint) => {
         if (!response.ok) {
           return Promise.reject(json)
         }
-        return json;    
+        return json.payload;    
     });
 }
 
@@ -38,9 +38,9 @@ export default store => next => action => {
   }
 
   const actionWith = data => {
-    const finalAction =  {...action, data}
-    delete finalAction[CALL_API]
-    return finalAction
+    const finalAction =  {...action, ...data};
+    delete finalAction[CALL_API];
+    return finalAction;
   };
 
   const [ requestType, successType, failureType ] = types;

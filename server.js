@@ -38,31 +38,31 @@ app.use(async (ctx, next) => {
 //     // }
 // });
 
-// var router = new Router({
-//   prefix: '/api/'
-// });
+var router = new Router({
+  prefix: '/api/'
+});
 
-// router.get('/recipes', async (ctx, next) => {
-//   try { 
-//     const response = await getRecipes();
-//     ctx.body = response;
-//   } catch (err) {
-//       ctx.status = 500;
-//       ctx.body = 'Internal server error';
-//   }
-// }); 
+router.get('recipes', async (ctx, next) => {
+  try { 
+    const recipes = await getRecipes();
+    ctx.body = {ok: true, payload: recipes};
+  } catch (err) {
+      ctx.status = 500;
+      ctx.body = 'Internal server error';
+  }
+}); 
 
-// router.get('/recipes/:id', async (ctx, next) => {
-//   try { 
-//     const response = await getRecipe(ctx.params.id);
-//     ctx.body = response;
-//   } catch (err) {
-//       ctx.status = 500;
-//       ctx.body = 'Internal server error';
-//   }
-// });
+router.get('recipes/:id', async (ctx, next) => {
+  try { 
+    const recipe = await getRecipe(ctx.params.id);
+    ctx.body = {ok: true, payload: recipe} ;
+  } catch (err) {
+      ctx.status = 500;
+      ctx.body = 'Internal server error';
+  }
+});
 
-// app.use(router.routes());
+app.use(router.routes());
 
 // app.use(function(ctx, next) {
 //     if (ctx.path.indexOf('/api/') !== 0) {
