@@ -4,14 +4,17 @@ Development
 ===========
 
 **npm run dev** 
- Use this command to start node.js server in development mode (using webpack-dev-middleware which will use `config/webpack.config.dev.js`).
- Hot reloading is enabled. Client bundle will be recompiled with every change, however server bundle won't (HMR wouldn't work if server was recompiled on every change). So in order to see changes made to server code we need to manually recompile server bundle and restart the app.
+ This will start koa server and webpack-dev-server for hot-module-replacement.
+ Open browser at 8080 port. 
+ Note that server bundle won't recompile by itself, so in order to see changes made to server code we need to manually recompile server bundle and restart the app.
  Use **npm run build-server** to do so. 
 
 Build & Production
 ==================
 
-**npm start** will create two bundles for client and server code and run server bundle with `node`.
+**npm start** will create two bundles for client and server code and put them in `/public/` folder in the root of the project.
+run server bundle with `node`.
+The server will start at 3000 port.
 
 Use **npm run test** for testing.  
 

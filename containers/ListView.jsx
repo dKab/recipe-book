@@ -5,16 +5,15 @@ import { loadRecipes } from '../actions'
 
 class ListViewComponent extends React.Component {
     static fetchData() {
-        console.log('fetching data for ListView');
         return loadRecipes();
     }
 
     render() {
         return (
             <div>
-                <span>123</span>
+                <span>Your awesome recipes:</span>
                 <ul>
-                    { this.props.recipes.list.map(recipe =><li key={recipe.id}><NavLink to={`/recipy/${recipe.id}`}>{recipe.name}</NavLink></li>) }
+                    { this.props.recipes.list.map(recipe =><li key={recipe.id}><NavLink to={`/recipe/${recipe.id}`}>{recipe.name}</NavLink></li>) }
                 </ul>
             </div>
         );

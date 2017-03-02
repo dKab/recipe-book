@@ -42,7 +42,7 @@ export const RECIPE_FAILURE = 'RECIPE_FAILURE';
 export const RECIPE_SUCCESS = 'RECIPE_SUCCESS';
 
 export const loadRecipe = (id) => (dispatch, getState) => {
-    const boundGetRecipe = () => loadRecipe(id);
+    const boundGetRecipe = () => getRecipe(id);
     const boundFetchRecipeFromAPI = () => fetchRecipeFromAPI(id);
     return isomorphicFetch(boundGetRecipe, boundFetchRecipeFromAPI, RECIPE_SUCCESS, RECIPE_FAILURE, dispatch);   
 }
