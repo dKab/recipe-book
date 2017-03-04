@@ -4,6 +4,6 @@ import styles from './NavLink.css';
 
 export const NavLink = (props) => {
     return (
-        <Link className="gfdsg" activeClassName="active" {...props}  />
+        <Link className={styles.navLink} activeClassName="active" {...props}  />
     );
 };

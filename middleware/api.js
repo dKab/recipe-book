@@ -5,9 +5,11 @@ const callApi = (endpoint) => {
   const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
 
   return fetch(fullUrl)
-    .then(response => response.json())
+    .then(response => { 
+      return response.json(); 
+    }, err => console.log(err))
     .then(json => {
-        if (!response.ok) {
+        if (!json.ok) {
           return Promise.reject(json)
         }
         return json.payload;    

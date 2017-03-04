@@ -1,7 +1,7 @@
 {
-  "name": "recipy-book",
+  "name": "recipe-book",
   "version": "1.0.0",
-  "description": "recipy-book allows you to store your favorite recipies",
+  "description": "recipe-book allows you to store your favorite recipies",
   "main": "index.js",
   "babel": {
     "env": {
@@ -27,12 +27,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/dKab/recipy-book.git"
+    "url": "git+ssh://git@github.com/dKab/recipe-book.git"
   },
   "keywords": [
-    "recipy",
+    "recipe",
     "recipies",
-    "recipy-book"
+    "recipe-book",
+    "react",
+    "redux",
+    "nodejs",
+    "koa2",
+    "isomorphic",
+    "universal",
+    "javascript"
   ],
   "author": "dKab",
   "license": "ISC",

@@ -38,6 +38,7 @@ app.use(async (ctx, next) => {
 //     // }
 // });
 
+
 var router = new Router({
   prefix: '/api/'
 });
@@ -64,15 +65,6 @@ router.get('recipes/:id', async (ctx, next) => {
 
 app.use(router.routes());
 
-// app.use(function(ctx, next) {
-//     if (ctx.path.indexOf('/api/') !== 0) {
-//         next();
-//     } else {
-//         // TODO somehow mount koa-router here so it can handle /api/ calls
-//         ctx.body = 'API isnt ready yet!';
-//     }
-// });
-
 app.use(async (ctx, next) => {
     await new Promise((resolve, reject) => {
         match({ routes: routes, location: ctx.path }, (err, redirect, props) => {
@@ -88,6 +80,11 @@ app.use(async (ctx, next) => {
             } else if (props) {
                 console.log('props.components', props.components);
                 console.log('props.params', props.params);
+
+                // TODO figure out how to get hold of all components which are descendants of
+                // matched component to call fetchData for all components that need it.
+                // https://github.com/ReactTraining/react-router/issues/4594
+                // https://gist.github.com/ryanflorence/efbe562332d4f1cc9331202669763741 
                 const store = createStore(reducer,
                         {},
                     applyMiddleware(thunk, api));
@@ -124,7 +121,7 @@ if (process.env.NODE_ENV != 'prod') {
         console.log('Listening on port 8080!');
     });
 } else {
-    // webpack-dev-server serves all static assets in development mode
+    // webpack-dev-server serves all static assets from memory in development mode
     app.use(serve('public'));
 }
 

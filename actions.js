@@ -57,6 +57,6 @@ const fetchRecipesFromAPI = () => ({
 const fetchRecipeFromAPI = (id) => ({
     [CALL_API]: {
         types: [RECIPE_REQUEST, RECIPE_SUCCESS, RECIPE_FAILURE],
-        endpoint: `recipe/${id}`
+        endpoint: `recipes/${id}`
     }
 });
