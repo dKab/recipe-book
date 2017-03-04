@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/dKab/recipy-book.svg?branch=master)](https://travis-ci.org/dKab/recipy-book)
+[![Build Status](https://travis-ci.org/dKab/recipe-book.svg?branch=master)](https://travis-ci.org/dKab/recipe-book)
 
 Development
 ===========
