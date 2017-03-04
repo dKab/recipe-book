@@ -1,6 +1,5 @@
 {
   "name": "recipe-book",
-  "version": "1.0.0",
   "description": "recipe-book allows you to store your favorite recipies",
   "main": "index.js",
   "babel": {
