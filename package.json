@@ -1,7 +1,6 @@
 {
-  "name": "recipy-book",
-  "version": "1.0.0",
-  "description": "recipy-book allows you to store your favorite recipies",
+  "name": "recipe-book",
+  "description": "recipe-book allows you to store your favorite recipies",
   "main": "index.js",
   "babel": {
     "env": {
@@ -20,19 +19,26 @@
     "test": "jest",
     "build-server": "webpack --config config/webpack.config.server.js",
     "predev": "rimraf public/bundle.js && npm run build-server",
-    "dev": "cross-env NODE_ENV=development nodemon --watch server.bundle.js server.bundle.js",
+    "dev": "cross-env NODE_ENV=development cross-env DEBUG=koa* nodemon --watch server.bundle.js server.bundle.js",
     "prestart": "webpack --config config/webpack.config.client.prod.js && npm run build-server",
     "start": "cross-env NODE_ENV=prod node server.bundle.js",
     "build": "npm run prestart"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/dKab/recipy-book.git"
+    "url": "git+ssh://git@github.com/dKab/recipe-book.git"
   },
   "keywords": [
-    "recipy",
+    "recipe",
     "recipies",
-    "recipy-book"
+    "recipe-book",
+    "react",
+    "redux",
+    "nodejs",
+    "koa2",
+    "isomorphic",
+    "universal",
+    "javascript"
   ],
   "author": "dKab",
   "license": "ISC",
@@ -46,6 +52,7 @@
     "babel-core": "^6.23.1",
     "babel-jest": "^19.0.0",
     "babel-loader": "^6.2.10",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-polyfill": "^6.23.0",
     "babel-preset-es2015": "^6.22.0",
     "babel-preset-es2017": "^6.22.0",
@@ -55,11 +62,11 @@
     "extract-text-webpack-plugin": "beta",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^19.0.2",
-    "koa": "next",
-    "koa-router": "next",
-    "koa-send": "^3.3.0",
-    "koa-static": "next",
+    "koa": "^2.0.1",
+    "koa-router": "^7.0.0",
+    "koa-static": "^3.0.0",
     "koa-webpack": "^0.2.2",
+    "module-mapping-webpack-plugin": "^1.1.1",
     "nodemon": "^1.11.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
@@ -68,12 +75,11 @@
     "react-router": "^3.0.2",
     "react-test-renderer": "^15.4.2",
     "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0",
     "regenerator-runtime": "^0.10.3",
     "rimraf": "^2.5.4",
     "webpack": "^2.2.1",
-    "webpack-dev-middleware": "^1.10.0",
-    "webpack-hot-middleware": "^2.17.0",
-    "webpack-merge": "^2.6.1"
+    "webpack-dev-server": "^2.4.1"
   },
   "jest": {
     "moduleNameMapper": {

@@ -3,14 +3,19 @@ import ReactDOM from 'react-dom';
 import {AppContainer} from 'react-hot-loader';
 import {RootComponent} from './components/RootComponent';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux';
-import {recipiesReducer} from './reducers';
+import {createStore, applyMiddleware} from 'redux';
+import {reducer} from './reducers';
+import api from './middleware/api';
+import thunk from 'redux-thunk';
 
 const preloadedState = window.__PRELOADED_STATE__;
 
-delete window.__PRELOADED_STATE__
+delete window.__PRELOADED_STATE__;
 
-const store = createStore(recipiesReducer, preloadedState);
+const store = createStore(reducer, 
+    preloadedState,
+    applyMiddleware(thunk, api)
+    );
 
 const render = (Component) => {
     let components;

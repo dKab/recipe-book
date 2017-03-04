@@ -1,14 +1,23 @@
-const webpackMerge = require('webpack-merge');
-const commonConfig = require('./webpack.config.client.common.js');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 
-module.exports = function() {
-    return webpackMerge(commonConfig, {
+module.exports = {
+        output: {
+            path: path.resolve(__dirname, '../public'),
+            filename: 'bundle.js',
+            publicPath: 'http://localhost:8080/public/'
+        },
         entry: [
-            "react-hot-loader/patch",
-            'webpack-hot-middleware/client',
+             'react-hot-loader/patch',
+            // activate HMR for React
+
+            'webpack-dev-server/client?http://localhost:8080',
+            // bundle the client for webpack-dev-server
+            // and connect to the provided endpoint
+
+            'webpack/hot/only-dev-server',
+            // bundle the client for hot rel
             './index.js'
         ],
         module: {
@@ -25,7 +34,8 @@ module.exports = function() {
                                     "react"
                                 ],
                                 plugins: [
-                                    "react-hot-loader/babel"
+                                    "react-hot-loader/babel",
+                                    "transform-object-rest-spread"
                                 ]
                             }
                         }
@@ -44,7 +54,40 @@ module.exports = function() {
                     }
             ]
         },
-        devtool: 'cheap-eval-source-map',
+        resolve: {
+            alias: {
+                'path': '../__mocks__/path-mock.js',
+                'fs': '../__mocks__/fs-mock.js'
+            }
+        },
+        devtool: 'inline-source-map',
+        devServer: {
+            contentBase: path.resolve(__dirname, '../public'),
+            hot: true,
+            quiet: false,
+            noInfo: false,
+            publicPath: 'http://localhost:8080/public/',
+            overlay: {
+                warnings: true,
+                errors: true
+            },
+            proxy: {
+                "/**": {
+                    target: "http://localhost:3000",
+                    bypass: function(req, res, proxyOptions) {
+                        if (req.path.indexOf("bundle.js") !== -1 
+                            || req.headers.accept.indexOf('css') !== -1
+                            ) {
+                            console.log(`Skipping proxy for ${req.path} request.`);
+                            return `/public${req.path}`;
+                        }
+                    }
+                }
+            },
+            stats: { 
+                colors: true
+            }
+        },
         plugins: [
             new ExtractTextPlugin({
                 filename: 'styles.css',
@@ -54,5 +97,4 @@ module.exports = function() {
             new webpack.HotModuleReplacementPlugin(),
             new webpack.NoEmitOnErrorsPlugin()
         ]
-    });
 };

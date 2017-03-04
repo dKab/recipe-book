@@ -4,7 +4,7 @@ export function renderPage(appHtml, initialState) {
         <html lang="en">
         <head>
             <meta charset="UTF-8">
-            <title>Recipy book</title>
+            <title>Recipe book</title>
             <link rel="stylesheet" href="/styles.css"/>    
         </head>
         <body>

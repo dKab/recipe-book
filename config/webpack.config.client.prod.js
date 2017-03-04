@@ -1,12 +1,14 @@
-const webpackMerge = require('webpack-merge');
-const commonConfig = require('./webpack.config.client.common.js');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 
-module.exports = function() {
-    return webpackMerge(commonConfig, {
+module.exports = {
         entry: './index.js',
+        output: {
+            path: path.resolve(__dirname, '../public'),
+            filename: 'bundle.js',
+            publicPath: '/'
+        },
         module: {
             rules: [
                 {
@@ -18,7 +20,10 @@ module.exports = function() {
                              presets: [
                                     ["es2015", {"modules": false}], //modules: false is because of webpack 2
                                     "react"
-                                ]
+                                ],
+                             plugins: [
+                                 "transform-object-rest-spread"
+                             ]
                         }
                     }
                 },
@@ -36,6 +41,12 @@ module.exports = function() {
                     })
                 }
             ]
+        },
+        resolve: {
+            alias: {
+                'path': '../__mocks__/path-mock.js',
+                'fs': '../__mocks__/fs-mock.js'
+            }
         },
         plugins: [
             new ExtractTextPlugin({
@@ -60,5 +71,4 @@ module.exports = function() {
                 comments: false
             })
         ]
-    })
 };
