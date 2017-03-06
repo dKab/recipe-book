@@ -14,7 +14,7 @@ Build & Production
 
 **npm start** will create two bundles for client and server code and put them in `/public/` folder in the root of the project.
 run server bundle with `node`.
-The server will start at 3000 port.
+The server will start at 3001 port.
 
 Use **npm run test** for testing.  
 

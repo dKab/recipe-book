@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink} from '../components/shared/NavLink/NavLink.jsx';
+import { NavLink } from '../components/shared/NavLink/NavLink.jsx';
 import { loadRecipes } from '../actions'
-import { ChildComponentForTest } from '../components/TestComponent.jsx';
+// import { ChildComponentForTest } from '../components/TestComponent.jsx';
 
 class ListViewComponent extends React.Component {
     static fetchData() {
@@ -14,9 +14,12 @@ class ListViewComponent extends React.Component {
             <div>
                 <span>Your awesome recipes:</span>
                 <ul>
-                    { this.props.recipes.list.map(recipe =><li key={recipe.id}><NavLink to={`/recipe/${recipe.id}`}>{recipe.name}</NavLink></li>) }
+                    { this.props.recipes.list.map(recipe => {
+                        return (<li key={recipe.id}>
+                                    <NavLink to={`/recipe/${recipe.id}`}>{recipe.name}</NavLink>
+                                </li>)
+                     }) }
                 </ul>
-                <ChildComponentForTest></ChildComponentForTest>
             </div>
         );
     }

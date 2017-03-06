@@ -3,112 +3,92 @@ import webpackDevConfig from './config/webpack.config.client.dev.js';
 import WebpackDevServer from 'webpack-dev-server';
 import webpack from 'webpack';
 import koa from 'koa';
-import {renderPage} from './server/renderTemplate';
+import { renderPage } from './server/renderTemplate';
 import serve from 'koa-static';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import { match, RouterContext } from 'react-router';
-import {routes} from './routes.jsx';
-import {NotFound} from './components/NotFound/NotFound.jsx';
-import {Provider} from 'react-redux';
-import {createStore, applyMiddleware} from 'redux';
-import {reducer} from './reducers';
-import Router from 'koa-router';
+import { StaticRouter, matchPath } from 'react-router';
+import routes from './routes';
+import { NotFound } from './components/NotFound/NotFound.jsx';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { reducer } from './reducers';
+import { router } from './server/api-endpoints';
 import api from './middleware/api';
 import thunk from 'redux-thunk';
-import { getRecipe, getRecipes } from './server/getRecipes';
 import path from 'path';
+import { App as AppComponent } from './components/App';
 
 const app = new koa();
 
 console.log(`running app in ${process.env.NODE_ENV} mode`);
 
 app.use(async (ctx, next) => {
-    await next();
-    console.log('here what in response body:', ctx.body);
-    console.log('status: ', ctx.status);
-})
-
-// app.use(async (ctx, next) => {
-//      await next();
-//     //  if (!ctx.body && ctx.status == 404) {
-//     //     console.log('sending 404');
-//     //     ctx.body = renderToString(<NotFound />);
-//     //     ctx.status = 404;
-//     // }
-// });
-
-
-var router = new Router({
-  prefix: '/api/'
+     await next();
+     if (!ctx.body && ctx.status == 404) {
+        ctx.body = renderToString(<NotFound />);
+        ctx.status = 404;
+    }
 });
 
-router.get('recipes', async (ctx, next) => {
-  try { 
-    const recipes = await getRecipes();
-    ctx.body = {ok: true, payload: recipes};
-  } catch (err) {
-      ctx.status = 500;
-      ctx.body = 'Internal server error';
-  }
-}); 
-
-router.get('recipes/:id', async (ctx, next) => {
-  try { 
-    const recipe = await getRecipe(ctx.params.id);
-    ctx.body = {ok: true, payload: recipe} ;
-  } catch (err) {
-      ctx.status = 500;
-      ctx.body = 'Internal server error';
-  }
-});
+const store = createStore(
+        reducer,
+        {},
+        applyMiddleware(thunk, api)
+    );
 
 app.use(router.routes());
 
 app.use(async (ctx, next) => {
+    console.log('we are in react-router middleware, path is:',  ctx.path);
     await new Promise((resolve, reject) => {
-        match({ routes: routes, location: ctx.path }, (err, redirect, props) => {
-            console.log('we are in match');
-            console.log(`url is ${ctx.path}`);
-            if (err) {
-                ctx.status = 500;
-                ctx.body = 'Server error';
-                reject(err);
-            } else if (redirect) {
-                ctx.redirect(redirect.pathname + redirect.search)
-                resolve();
-            } else if (props) {
-                console.log('props.components', props.components);
-                console.log('props.params', props.params);
-
-                // TODO figure out how to get hold of all components which are descendants of
-                // matched component to call fetchData for all components that need it.
-                // https://github.com/ReactTraining/react-router/issues/4594
-                // https://gist.github.com/ryanflorence/efbe562332d4f1cc9331202669763741 
-                const store = createStore(reducer,
-                        {},
-                    applyMiddleware(thunk, api));
-                // TODO check that wee have indeed ALL our components here even child ones and deeply nested
-                const promises = props.components
-                    .filter(component => typeof component.fetchData !== 'undefined') 
-                    .map(component => store.dispatch(component.fetchData(props.params)));
-                
-                console.log(`we have ${promises.length} promises`);
-                Promise.all(promises).then(() => {
-                    console.log('promises are done');
-                    const appHtml = renderToString( <Provider store={store}>
-                                                    <RouterContext {...props}/>
-                                                </Provider>);
-                    const initialState = store.getState();
-                    ctx.body = renderPage(appHtml, initialState);
-                    resolve();
+        const matches = routes.reduce((matches, route) => {
+            const match = matchPath(ctx.url, route);
+            if (match) {
+                matches.push({
+                    route,
+                    match,
+                    promise: route.component.fetchData 
+                        ? store.dispatch(route.component.fetchData(match.params))
+                        : Promise.resolve(null)
                 });
-            } else {
-                resolve();
             }
-        });
+            return matches;
+        }, []);
+
+        if (!matches.length) {
+         // ?   return reject('404');
+            console.log('No matched routes from react-router');
+            resolve();
+        } else {
+            const promises = matches.map(match => match.promise);
+            Promise.all(promises)
+                .then(() => {
+                    const context = {};
+                    const appHtml = renderToString(
+                    <Provider store={store}>
+                        <StaticRouter location={ctx.url} context={context}>
+                           <AppComponent />
+                        </StaticRouter>
+                    </Provider>);
+                    if (context.url) {
+                        ctx.redirect(context.url);
+                    } else {
+                        const initialState = store.getState();
+                        ctx.body = renderPage(appHtml, initialState);
+                    }
+                    resolve();
+                }, (err) => {
+                    ctx.status = 500;
+                    ctx.body = 'Server error';
+                    reject(err);
+                })
+        }
     });
+    console.log('awaiting static middleware, body = ', ctx.body);
+    console.log('status = ', ctx.status);
     await next();
+    console.log(`static middleware finished, body = ${ctx.body}, status = ${ctx.status}`); 
 });
 
 if (process.env.NODE_ENV != 'prod') {
@@ -121,8 +101,9 @@ if (process.env.NODE_ENV != 'prod') {
         console.log('Listening on port 8080!');
     });
 } else {
+    console.log('using static middleware since we are in prod');
     // webpack-dev-server serves all static assets from memory in development mode
-    app.use(serve('public'));
+    app.use(serve('public'));  
 }
 
-app.listen(3000, () => {});
+app.listen(3001, () => {});
