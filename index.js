@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {AppContainer} from 'react-hot-loader';
-import {RootComponent} from './components/RootComponent';
-import {Provider} from 'react-redux';
-import {createStore, applyMiddleware} from 'redux';
-import {reducer} from './reducers';
+import { AppContainer } from 'react-hot-loader';
+import { App } from './components/App';
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import { reducer } from './reducers';
 import api from './middleware/api';
 import thunk from 'redux-thunk';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 const preloadedState = window.__PRELOADED_STATE__;
 
@@ -18,24 +19,32 @@ const store = createStore(reducer,
     );
 
 const render = (Component) => {
-    let components;
+    let componentTree;
     if (process.env.NODE_ENV === 'production') {
-        components = <Provider store={store}><Component /></Provider>;
+        componentTree = (<Provider store={store}>
+                            <Router>
+                                <Component />
+                            </Router>
+                        </Provider>);
     } else {
-        components = (<AppContainer>
-                        <Provider store={store}><Component/></Provider>
+        componentTree = (<AppContainer>
+                            <Provider store={store}>
+                                <Router>
+                                    <Component/>
+                                </Router>
+                            </Provider>
                       </AppContainer>);
     }
     ReactDOM.render(
-        components,
+        componentTree,
         document.getElementById('react-root')
     );
 };
 
-render(RootComponent);
+render(App);
 
 if (module.hot) {
-    module.hot.accept('./components/RootComponent', () => {
-        render(RootComponent);
+    module.hot.accept('./components/App', () => {
+        render(App);
     });
 }

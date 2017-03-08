@@ -3,8 +3,9 @@
 exports[`renders correctly 1`] = `
 <a
   className="navLink"
+  href="/whatever"
   onClick={[Function]}
-  style={Object {}}
+  style={undefined}
 >
   Somewhere
 </a>

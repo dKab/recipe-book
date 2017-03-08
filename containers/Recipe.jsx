@@ -31,7 +31,7 @@ class RecipeComponent extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => ({
-    RecipeId: ownProps.params.id,
+    RecipeId: ownProps.match.params.id,
     recipe: state.currentRecipe
 });
 

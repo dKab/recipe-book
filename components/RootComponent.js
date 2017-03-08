@@ -1,6 +1,6 @@
 import React from 'react';
 import {routes} from '../routes.jsx';
-import {Router, browserHistory} from 'react-router';
+import { Router, browserHistory } from 'react-router';
 
 export const RootComponent = () => {
     return (

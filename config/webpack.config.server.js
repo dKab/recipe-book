@@ -34,7 +34,7 @@ module.exports = {
                     options: {
                         presets: [
                             "es2015",
-                            "es2017", //for koa async-await
+                            "es2017",
                             "react"
                         ],
                         plugins: [ "transform-object-rest-spread" ]

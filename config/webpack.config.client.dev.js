@@ -73,7 +73,7 @@ module.exports = {
             },
             proxy: {
                 "/**": {
-                    target: "http://localhost:3000",
+                    target: "http://localhost:3001",
                     bypass: function(req, res, proxyOptions) {
                         if (req.path.indexOf("bundle.js") !== -1 
                             || req.headers.accept.indexOf('css') !== -1
