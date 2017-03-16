@@ -42,7 +42,7 @@ const render = (Component) => {
 };
 
 render(App);
-
+/* global module:false */
 if (module.hot) {
     module.hot.accept('./components/App', () => {
         render(App);

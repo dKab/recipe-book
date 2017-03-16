@@ -16,6 +16,7 @@
     }
   },
   "scripts": {
+    "eslint": "eslint --ignore-path .gitignore --format codeframe --ext .jsx,.js ./",
     "test": "jest",
     "build-server": "webpack --config config/webpack.config.server.js",
     "predev": "rimraf public/bundle.js && npm run build-server",
@@ -30,7 +31,7 @@
   },
   "keywords": [
     "recipe",
-    "recipies",
+    "recipes",
     "recipe-book",
     "react",
     "redux",
@@ -59,6 +60,10 @@
     "babel-preset-react": "^6.22.0",
     "cross-env": "^3.1.4",
     "css-loader": "^0.26.1",
+    "eslint": "^3.17.1",
+    "eslint-config-prettier": "^1.5.0",
+    "eslint-plugin-prettier": "^2.0.1",
+    "eslint-plugin-react": "latest",
     "extract-text-webpack-plugin": "beta",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^19.0.2",
@@ -68,6 +73,7 @@
     "koa-webpack": "^0.2.2",
     "module-mapping-webpack-plugin": "^1.1.1",
     "nodemon": "^1.11.0",
+    "prettier": "^0.22.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-hot-loader": "next",
