@@ -1,14 +1,16 @@
-import { ListView } from './containers/ListView.jsx';
-import { Recipe } from './containers/Recipe.jsx';
+import { ListView } from "./containers/ListView.jsx";
+import { Recipe } from "./containers/Recipe.jsx";
 
 const routes = [
-  { path: '/',
+  {
+    path: "/",
     exact: true,
     component: ListView
   },
-  { path: '/recipe/:id',
+  {
+    path: "/recipe/:id",
     component: Recipe
   }
 ];
 
-export default routes
+export default routes;
