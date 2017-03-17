@@ -16,12 +16,14 @@
     }
   },
   "scripts": {
+    "CI": "npm run eslint && npm run test && npm run build-server && npm run build-client",
     "eslint": "eslint --ignore-path .gitignore --format codeframe --ext .jsx,.js ./",
     "test": "jest",
     "build-server": "webpack --config config/webpack.config.server.js",
+    "build-client": "webpack --config config/webpack.config.client.prod.js",
     "predev": "rimraf public/bundle.js && npm run build-server",
     "dev": "cross-env NODE_ENV=development cross-env DEBUG=koa* nodemon --watch server.bundle.js server.bundle.js",
-    "prestart": "webpack --config config/webpack.config.client.prod.js && npm run build-server",
+    "prestart": "npm run build-client && npm run build-server",
     "start": "cross-env NODE_ENV=prod node server.bundle.js",
     "build": "npm run prestart"
   },
