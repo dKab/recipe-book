@@ -1,4 +1,4 @@
 language: node_js
 node_js:
   - "node"
-scipt: npm run CI
+script: npm run CI
