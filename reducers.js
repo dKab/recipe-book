@@ -22,7 +22,7 @@ const recipes = (state = initialRecipes, action) => {
         ...state,
         isLoading: false,
         loaded: true,
-        list: action.response.recipes
+        list: action.response
       };
     case RECIPES_REQUEST:
       return { ...state, isLoading: true };

@@ -6,14 +6,13 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import { reducer } from "./reducers";
 import api from "./middleware/api";
-import thunk from "redux-thunk";
 import { BrowserRouter as Router } from "react-router-dom";
 
 const preloadedState = window.__PRELOADED_STATE__;
 
 delete window.__PRELOADED_STATE__;
 
-const store = createStore(reducer, preloadedState, applyMiddleware(thunk, api));
+const store = createStore(reducer, preloadedState, applyMiddleware(api));
 
 const render = Component => {
   let componentTree;

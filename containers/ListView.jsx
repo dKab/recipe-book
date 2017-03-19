@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { NavLink } from "../components/shared/NavLink/NavLink.jsx";
 import { loadRecipes } from "../actions";
-// import { ChildComponentForTest } from '../components/TestComponent.jsx';
 
 class ListViewComponent extends React.Component {
   static fetchData() {

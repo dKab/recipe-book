@@ -39,12 +39,6 @@ module.exports = {
       }
     ]
   },
-  resolve: {
-    alias: {
-      path: "../__mocks__/path-mock.js",
-      fs: "../__mocks__/fs-mock.js"
-    }
-  },
   plugins: [
     new ExtractTextPlugin({
       filename: "styles.css",
