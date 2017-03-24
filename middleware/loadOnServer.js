@@ -1,34 +1,16 @@
-const API_ROOT = "/api/";
-
-const showError = (/*error*/) => {
-  //show error somehow
+/*
+This middleware is used on server insdead of `api` middleware
+which is used for client use. loadOnServer intercepts actions in the same format
+as `api` middleware but instead of making xhr request to server API, it reads the url
+from action object and calls corresponding function directly  
+ */
+import { CALL_API } from "./api";
+import { routeLoaderMap } from "../server/api-endpoints";
+const invokeLoaderDirectly = (endpoint, params) => {
+  const loader = routeLoaderMap.get(endpoint);
+  return loader(params);
 };
 
-const callApi = endpoint => {
-  const fullUrl = endpoint.indexOf(API_ROOT) === -1
-    ? API_ROOT + endpoint
-    : endpoint;
-
-  return fetch(fullUrl)
-    .then(
-      response => {
-        return response.json();
-      },
-      showError
-    )
-    .then(json => {
-      if (!json.ok) {
-        return Promise.reject(json);
-      }
-      return json.result;
-    });
-};
-
-// Action key that carries API call info interpreted by this Redux middleware.
-export const CALL_API = "Call API";
-
-// A Redux middleware that interprets actions with CALL_API info specified.
-// Performs the call and promises when such actions are dispatched.
 export default () =>
   next =>
     action => {
@@ -37,7 +19,7 @@ export default () =>
         return next(action);
       }
 
-      const { endpoint, types } = callAPI;
+      const { endpoint, types, params } = callAPI;
 
       if (typeof endpoint !== "string") {
         throw new Error("Specify a string endpoint URL.");
@@ -55,10 +37,9 @@ export default () =>
         return finalAction;
       };
 
-      const [requestType, successType, failureType] = types;
-      next(actionWith({ type: requestType }));
+      const [, successType, failureType] = types;
 
-      return callApi(endpoint).then(
+      return invokeLoaderDirectly(endpoint, params).then(
         response =>
           next(
             actionWith({

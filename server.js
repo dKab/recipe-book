@@ -1,6 +1,3 @@
-/* eslint-disable */
-import regeneratorRuntime from "regenerator-runtime";
-/* eslint-enable */
 import webpackDevConfig from "./config/webpack.config.client.dev.js";
 import WebpackDevServer from "webpack-dev-server";
 import webpack from "webpack";
@@ -16,8 +13,7 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import { reducer } from "./reducers";
 import { router } from "./server/api-endpoints";
-import api from "./middleware/api";
-import thunk from "redux-thunk";
+import loadOnServer from "./middleware/loadOnServer";
 import { App as AppComponent } from "./components/App";
 
 const app = new koa();
@@ -30,7 +26,7 @@ app.use(async (ctx, next) => {
   }
 });
 
-const store = createStore(reducer, {}, applyMiddleware(thunk, api));
+const store = createStore(reducer, {}, applyMiddleware(loadOnServer));
 
 app.use(router.routes());
 
