@@ -16,6 +16,7 @@
     }
   },
   "scripts": {
+    "create-database": "web-app-db",
     "CI": "npm run eslint && npm run test && npm run build-server && npm run build-client",
     "eslint": "eslint --ignore-path .gitignore --format codeframe --ext .jsx,.js ./",
     "test": "jest",
@@ -24,7 +25,7 @@
     "predev": "rimraf public/bundle.js && npm run build-server",
     "dev": "cross-env NODE_ENV=development cross-env DEBUG=koa* nodemon --watch server.bundle.js server.bundle.js",
     "prestart": "npm run build-client && npm run build-server",
-    "start": "cross-env NODE_ENV=prod node server.bundle.js",
+    "start": "cross-env NODE_ENV=production node server.bundle.js",
     "build": "npm run prestart"
   },
   "repository": {
@@ -67,12 +68,14 @@
     "eslint-plugin-prettier": "^2.0.1",
     "eslint-plugin-react": "latest",
     "extract-text-webpack-plugin": "beta",
+    "grant-koa": "^3.7.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^19.0.2",
     "koa": "^2.0.1",
+    "koa-mount": "^3.0.0",
     "koa-router": "^7.0.0",
+    "koa-session": "^5.0.0",
     "koa-static": "^3.0.0",
-    "koa-webpack": "^0.2.2",
     "module-mapping-webpack-plugin": "^1.1.1",
     "nodemon": "^1.11.0",
     "pg": "^6.1.4",
@@ -87,6 +90,9 @@
     "redux": "^3.6.0",
     "regenerator-runtime": "^0.10.3",
     "rimraf": "^2.5.4",
+    "sql-template-strings": "^2.2.2",
+    "url-loader": "^0.5.8",
+    "web-app-db": "^1.2.0",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1"
   },
