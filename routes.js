@@ -1,5 +1,6 @@
 import { ListView } from "./containers/ListView.jsx";
 import { Recipe } from "./containers/Recipe.jsx";
+import { Login } from "./containers/Login.jsx";
 
 const routes = [
   {
@@ -10,6 +11,10 @@ const routes = [
   {
     path: "/recipe/:id",
     component: Recipe
+  },
+  {
+    path: "/login",
+    component: Login
   }
 ];
 

@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { NavLink } from "../components/shared/NavLink/NavLink.jsx";
 import { loadRecipes } from "../actions";
+import { AuthButton } from "../components/AuthButton/AuthButton.jsx";
 
 class ListViewComponent extends React.Component {
   static fetchData() {
@@ -11,6 +12,7 @@ class ListViewComponent extends React.Component {
   render() {
     return (
       <div>
+        <AuthButton user={this.props.user} />
         <span>Your awesome recipes:</span>
         <ul>
           {this.props.recipes.list.map(recipe => {
@@ -39,7 +41,8 @@ class ListViewComponent extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  recipes: state.recipes
+  recipes: state.recipes,
+  user: state.user
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -52,6 +55,10 @@ export const ListView = connect(mapStateToProps, mapDispatchToProps)(
 
 ListViewComponent.propTypes = {
   dispatchLoadRecipes: React.PropTypes.func.isRequired,
+  user: React.PropTypes.shape({
+    name: React.PropTypes.string,
+    id: React.PropTypes.number
+  }),
   recipes: React.PropTypes.shape({
     loaded: React.PropTypes.bool,
     list: React.PropTypes.array

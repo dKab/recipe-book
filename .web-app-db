@@ -1,0 +1,26 @@
+# The database user used by the application while it's running
+DB_USER=recipe-book-web-user
+DB_PASSWORD=tea
+ 
+# The database user used to deploy the application
+DB_ADMIN=recipe-book-admin
+DB_ADMIN_PASSWORD=coffee
+ 
+# The root name of the database - _production, _development, and _test will be appended
+DB_NAME=recipe-book
+ 
+# The schema name to use with the databases, if left empty it will default to the database root name
+DB_SCHEMA_NAME=recipe-book
+ 
+# Host where the database server is running (IP address)
+DB_HOST=127.0.0.1
+ 
+# Port the database server is exposing for the database (defaults to 5432)
+DB_PORT=5432
+ 
+# The default database on your PostgreSQL server - usually postgres
+DEFAULT_DATABASE=postgres
+ 
+# The superuser you've initialized your server with - usually postgres
+DB_SUPERUSER_NAME=postgres
+DB_SUPERUSER_PASSWORD=postgres

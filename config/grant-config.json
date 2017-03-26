@@ -1,0 +1,11 @@
+{
+  "server": {
+    "protocol": "http",
+    "host": "dummy.com:8080"
+  },
+  "twitter": {
+    "key": "xXYWYoQe5pvq4GB26D5QN1pht",
+    "secret": "fCZnuSYfoHF6jJSFvZ8w8VdRncBZ5oEzIU0cXdQyYgsefc1JlW",
+    "callback": "/handle_twitter_callback"
+  }
+}

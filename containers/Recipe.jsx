@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { loadRecipe } from "../actions";
+import { AuthButton } from "../components/AuthButton/AuthButton.jsx";
 
 class RecipeComponent extends React.Component {
   static fetchData(params) {
@@ -11,6 +12,7 @@ class RecipeComponent extends React.Component {
   render() {
     return (
       <div>
+        <AuthButton user={this.props.user} />
         <h2>{this.props.recipe.name}</h2>
         <div>
           Description: <br />
@@ -35,6 +37,7 @@ class RecipeComponent extends React.Component {
 
 const mapStateToProps = (state, ownProps) => ({
   RecipeId: ownProps.match.params.id,
+  user: state.user,
   recipe: state.currentRecipe
 });
 
@@ -47,6 +50,10 @@ export const Recipe = connect(mapStateToProps, mapDispatchToProps)(
 );
 
 RecipeComponent.propTypes = {
+  user: React.PropTypes.shape({
+    name: React.PropTypes.string,
+    id: React.PropTypes.number
+  }),
   RecipeId: React.PropTypes.oneOfType([
     React.PropTypes.string,
     React.PropTypes.number

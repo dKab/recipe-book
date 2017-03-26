@@ -1,21 +1,10 @@
 import fs from "fs";
 import path from "path";
-import pg from "pg";
-const config = {
-  user: "postgres", // TODO change user (postgres has root priviliges)
-  database: "postgres",
-  password: "postgres",
-  host: "localhost",
-  port: 5432,
-  max: 10,
-  idleTimeoutMillis: 30000
-};
-const pool = new pg.Pool(config);
+import { query } from "./db";
 
 export const getRecipes = async () => {
-  // console.log(dbconfig);
   try {
-    const queryResult = await pool.query(`SELECT * FROM public."Recipes";`);
+    const queryResult = await query(`SELECT * FROM "Recipes";`);
     return Promise.resolve(queryResult.rows);
   } catch (err) {
     return Promise.reject(err);
