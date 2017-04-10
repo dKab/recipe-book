@@ -6,9 +6,17 @@ from action object and calls corresponding function directly
  */
 import { CALL_API } from "./api";
 import { routeLoaderMap } from "../server/api-endpoints";
-const invokeLoaderDirectly = (endpoint, params) => {
-  const loader = routeLoaderMap.get(endpoint);
-  return loader(params);
+import pathToRegexp from "path-to-regexp";
+
+const invokeLoaderDirectly = (apiEndpointUrl, params) => {
+  var matchedHandler;
+  for (let [path, loader] of routeLoaderMap) {
+    if (pathToRegexp(path).test(apiEndpointUrl)) {
+      matchedHandler = loader;
+      break;
+    }
+  }
+  return matchedHandler(params);
 };
 
 export default () =>
