@@ -1,6 +1,8 @@
 import Router from "koa-router";
 import { query } from "./db";
 import SQL from "sql-template-strings";
+import routes from "../routes";
+import { matchPath } from "react-router";
 
 export const router = new Router();
 router.get("/handle_twitter_callback", async ctx => {
@@ -89,6 +91,14 @@ WHERE
     const returnedRow = result.rows.shift();
     ctx.session.user = { id: returnedRow.id, name: returnedRow.name };
   }
-  ctx.redirect("/");
+  ctx.redirect("/"); //TODO redirect to the page from where we came to /login.
   //TODO handle case when twitter didn't authenticate the user
+});
+
+router.get("/logout", ctx => {
+  ctx.session = null;
+  const { url } = ctx.query;
+  const route = routes.find(route => !!matchPath(url, route));
+  const redirectTo = route && route.authRequired ? "/login" : url;
+  ctx.redirect(redirectTo);
 });
