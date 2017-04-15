@@ -41,11 +41,9 @@ if (process.env.NODE_ENV != "production") {
     webpack(webpackDevConfig),
     webpackDevConfig.devServer
   );
-
   webpackDevServer.listen(8080, "localhost");
-} else {
-  // webpack-dev-server serves all static assets from memory in development mode
-  app.use(serve("public"));
 }
+app.use(serve("public"));
 
-app.listen(3001, () => {});
+let appPort = process.env.NODE_ENV != "production" ? 3001 : 8080;
+app.listen(appPort, () => {});

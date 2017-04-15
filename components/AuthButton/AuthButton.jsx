@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router";
-import { NavLink, navLinkStyles } from "../shared/NavLink/NavLink.jsx";
+import { NavLink } from "../shared/NavLink/NavLink.jsx";
 export const AuthButton = ({ user }) => {
   return (
     <div>
@@ -14,7 +14,7 @@ export const AuthButton = ({ user }) => {
 const LogOutLink = withRouter(({ match }) => {
   // Passing path and url of current location so that server could know where to redirect to after logout.
   const href = `/logout?url=${match.url}`;
-  return <a className={navLinkStyles} href={href}>Log out</a>;
+  return <a href={href}>Log out</a>;
 });
 
 AuthButton.propTypes = {

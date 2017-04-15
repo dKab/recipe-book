@@ -5,6 +5,7 @@ export function renderPage(appHtml, initialState) {
         <head>
             <meta charset="UTF-8">
             <title>Recipe book</title>
+            <link rel="stylesheet" href="/common-styles.css"/>
             <link rel="stylesheet" href="/styles.css"/>    
         </head>
         <body>
