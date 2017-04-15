@@ -13,18 +13,14 @@ import Grant from "grant-koa";
 import mount from "koa-mount";
 import grantConfig from "./config/grant-config";
 import session from "koa-session";
-
+import {
+  sessionConfig,
+  sessionCookieEncryptionKey
+} from "./server/session-middleware";
 const app = new koa();
 const grant = new Grant(grantConfig);
-app.keys = ["a key for encryption of cookies and stuff"];
-app.use(
-  session(
-    {
-      key: "recipy-book"
-    },
-    app
-  )
-);
+app.keys = [sessionCookieEncryptionKey];
+app.use(session(sessionConfig, app));
 app.use(mount(grant));
 
 app.use(async (ctx, next) => {
