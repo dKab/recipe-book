@@ -1,0 +1,6 @@
+a:not(.active), a:visited:not(.active) {
+  color: green
+}
+a:hover {
+  text-decoration: none;
+}

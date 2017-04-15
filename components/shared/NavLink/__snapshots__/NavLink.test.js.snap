@@ -2,7 +2,7 @@
 
 exports[`renders correctly 1`] = `
 <a
-  className="navLink"
+  className={undefined}
   href="/whatever"
   onClick={[Function]}
   style={undefined}

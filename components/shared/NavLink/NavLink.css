@@ -1,3 +1,5 @@
-.navLink {
-    color: green;
+.active {
+  color: black !important;
+  text-decoration: none;
+  cursor: default;
 }

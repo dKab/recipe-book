@@ -1,6 +1,6 @@
 import { ListView } from "./containers/ListView.jsx";
 import { Recipe } from "./containers/Recipe.jsx";
-import { Login } from "./containers/Login.jsx";
+import { Login } from "./containers/Login/Login.jsx";
 
 // Use `authRequired: true` to make route private
 // it's not part of react-router API - it's just how I decided to mark routes as private

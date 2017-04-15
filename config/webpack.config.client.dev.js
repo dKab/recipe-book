@@ -72,8 +72,9 @@ module.exports = {
         target: "http://localhost:3001",
         bypass: function(req) {
           if (
-            req.path.indexOf("bundle.js") !== -1 ||
-            req.headers.accept.indexOf("css") !== -1
+            (req.path.indexOf("bundle.js") !== -1 ||
+              req.headers.accept.indexOf("css") !== -1) &&
+            req.path.indexOf("common-styles.css") == -1
           ) {
             return `/public${req.path}`;
           }
