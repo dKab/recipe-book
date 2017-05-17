@@ -68,7 +68,7 @@
     "eslint-config-prettier": "^1.5.0",
     "eslint-plugin-prettier": "^2.0.1",
     "eslint-plugin-react": "latest",
-    "extract-text-webpack-plugin": "beta",
+    "extract-text-webpack-plugin": "^2.1.0",
     "grant-koa": "^3.7.1",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^19.0.2",
